@@ -1,3 +1,12 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 enum Role {
   SUPER_ADMIN
   SUSTAINABILITY_MANAGER
@@ -37,4 +46,18 @@ model User {
   @@index([status])
   @@index([company_id])
   @@index([created_at])
+}
+
+
+model RefreshToken {
+  id            String  @id @default(cuid())
+  user_id       String
+  user          User    @relation(fields: [user_id], references: [id])
+  refresh_token String  @unique
+  expires_at    DateTime
+  created_at    DateTime @default(now())
+
+  @@map("refresh_tokens")
+  @@index([user_id])
+  @@index([refresh_token])
 }
