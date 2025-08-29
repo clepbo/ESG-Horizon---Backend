@@ -5,11 +5,13 @@ import {
   IsOptional,
   ValidateNested,
   IsArray,
+  IsDate,
   IsBoolean
 } from 'class-validator';
 import { AssessmentStatus, DisclosureCategory, FuelType } from '@prisma/client';
 import { File } from '../common/file.interface';
 import { Type } from 'class-transformer';
+
 class FileDto {
   @IsOptional()
   @IsString()
@@ -19,9 +21,10 @@ class FileDto {
   url: string;
 }
 
-class Scope1CreateDto {
+class Scope1UpdateDto {
   @IsInt()
-  ghgDataId: number;
+  @IsOptional()
+  ghgDataId?: number;
 
   @IsBoolean()
   @IsOptional()
@@ -71,22 +74,26 @@ class ElectricityHeatDto {
 class GhgDataDto {
   @IsOptional()
   @ValidateNested()
-  @Type(() => Scope1CreateDto)
-  scope1?: Scope1CreateDto | null;
+  @Type(() => Scope1UpdateDto)
+  scope1?: Scope1UpdateDto | null;
 }
 
 class DisclosureTopicDto {
   @IsInt()
-  assessmentId: number;
+  @IsOptional()
+  assessmentId?: number;
 
   @IsEnum(DisclosureCategory)
-  category: DisclosureCategory;
+  @IsOptional()
+  category?: DisclosureCategory;
 
   @IsString()
-  topic: string;
+  @IsOptional()
+  topic?: string;
 
   @IsString()
-  subtopic: string;
+  @IsOptional()
+  subtopic?: string;
 
   @IsOptional()
   @ValidateNested()
@@ -106,19 +113,27 @@ class DisclosureTopicDto {
   waterData?: File[] | null;
 }
 
-export class CreateAssessmentDto {
+export class UpdateAssessmentDto {
   @IsString()
-  subsidiary: string;
+  @IsOptional()
+  subsidiary?: string;
 
   @IsString()
-  reportingPeriod: string;
+  @IsOptional()
+  reportingPeriod?: string;
 
   @IsEnum(AssessmentStatus)
   @IsOptional()
   status?: AssessmentStatus;
 
   @IsInt()
-  createdById: number;
+  @IsOptional()
+  createdById?: number;
+
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  completedAt?: Date | null;
 
   @IsOptional()
   @IsArray()
