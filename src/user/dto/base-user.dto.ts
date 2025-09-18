@@ -6,17 +6,15 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class RegisterDto {
+export class BaseUserDto {
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(8)
-  password: string;
-
-  @IsString()
-  @MinLength(2)
-  full_name: string;
+  password?: string;
 
   @IsOptional()
   @IsString()
@@ -25,14 +23,6 @@ export class RegisterDto {
 
   @IsOptional()
   @IsString()
-  company?: string;
-  
-  @IsOptional()
-  @IsString()
-  role?: string;
-
-  @IsString()
-  @IsOptional()
   profile_photo_url?: string;
 
   @IsOptional()
