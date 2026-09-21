@@ -108,6 +108,26 @@ const PEOPLE: Array<{
   { first: 'Nkechi', last: 'Maduka', role: 'company_esg_viewer', dept: 3, sub: 1 },
 ];
 
+/**
+ * Inline SVG logo for the demo company, as a data URI.
+ *
+ * Two reasons it is inlined rather than a hosted URL: the demo runs without
+ * Cloudinary configured, and the frontend's custom image loader passes `data:`
+ * sources through untouched, so it renders with no network dependency.
+ *
+ * It also matters functionally — the onboarding-progress endpoint treats a
+ * company profile as incomplete without company_logo_url, which would land the
+ * demo on a setup checklist instead of the populated dashboard.
+ */
+const DEMO_LOGO_DATA_URI =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">' +
+      '<rect width="120" height="120" rx="24" fill="#0f766e"/>' +
+      '<path d="M26 84V36h12l22 30 22-30h12v48H82V58L60 88 38 58v26z" fill="#ffffff"/>' +
+      '</svg>',
+  );
+
 export const emailFor = (first: string, last: string): string =>
   `${first}.${last}`.toLowerCase().replace(/[^a-z.]/g, '') + DEMO_EMAIL_SUFFIX;
 
@@ -204,6 +224,7 @@ export async function seedTenant(
       status: CompanyStatus.active,
       company_type: CompanyType.esg,
       staff_strength: '1000-5000',
+      company_logo_url: DEMO_LOGO_DATA_URI,
       requireAssessmentReview: true,
       created_by: admin.id,
       updated_by: admin.id,
