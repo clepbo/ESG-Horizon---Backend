@@ -28,7 +28,11 @@
     "make-badge": "coverage-badges",
     "test:badges": "yarn test:cov && yarn make-badge",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "demo:seed": "ts-node prisma/demo-seed.ts",
+    "demo:reset": "ts-node prisma/demo-reset.ts",
+    "demo:rebuild": "yarn demo:reset && yarn db:seed && yarn demo:seed",
+    "demo:up": "prisma migrate deploy && yarn db:seed && yarn demo:seed"
   },
   "prisma": {
     "schema": "prisma/schema"
